@@ -1,0 +1,40 @@
+<style>
+	.centering{
+		float:none;
+		margin:0 auto
+	}
+</style>
+<div class="col-md-6 centering">
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<div class="table-responsive">
+				<table class="table table-hover table-inverse">
+					<thead>
+						<tr>
+							<th>DATA</th>
+							<th>HORA</th>
+							<th>CRONOMETRO</th>
+							<th>TIME</th>
+							<th>DESCRIÇÃO</th>
+						</tr>
+					</thead>
+					
+					<tbody ng-repeat="melhores in melhoresmomentos" ng-init="vm.count = $index">
+						<tr>  		
+							<th>{{ melhores.data | date:'dd/MM/yyyy'}}</th>
+							<th>{{ melhores.hora | date:'HH:mm:ss'}}</th>
+							<th>{{melhores.cronometro}}</th>
+							<th>{{melhores.time}}</th>
+							<th> <div class="form-group">
+								<textarea ng-model="vm.descricao[$index]" rows="3" id="comment"></textarea>
+							</div></th>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<p><b>Hora inicio : {{ vm.inicio | date:'dd/MM/yyyy HH:mm:ss'}}</b></p>
+			<p><b>Hora fim : {{melhoresmomentos.final | date:'dd/MM/yyyy HH:mm:ss'}}</b></p>
+			<a class="form-control btn btn-success" ng-click="enviarGols()" href="#/finalizar" ng-disabled="!vm.jogoiniciado" >Enviar Gols e Lances <span class="glyphicon glyphicon-ok"></span></a>
+		</div>
+	</div>
+</div>

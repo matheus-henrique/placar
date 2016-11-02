@@ -1,0 +1,151 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="pt-br" ng-app="myApp">
+<head>
+	<meta charset="UTF-8">
+
+	<!-- BOOTSTRAP -->
+	<link rel="stylesheet" type="text/css" href="{% static 'css/css/bootstrap.css' %}">
+	
+	<!-- LIBRARY -->
+	<script src="{% static 'js/library/angular.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/library/angular-route.js' %}"></script>
+
+	<!-- MAIN -->
+	<script src="{% static 'js/main.js' %}"></script>
+	<!-- CONTROLLERS  -->
+	<script src="{% static 'js/controllers/HomeCtrl.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/controllers/FinalizarCtrl.js' %}"></script>
+
+	<title>Gerenciador de jogos</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<script type="text/javascript">
+	window.token = "{{csrf_token}}";
+</script>
+<body ng-controller="HomeCtrl">
+	<style type="text/css">
+		body{
+			background: url({% static 'img/bg-body.jpg' %}) no-repeat center top fixed;
+			-moz-background-size: cover;
+		}
+	</style>
+	<div class="container">
+		{% verbatim %}
+		<div ng-show="!vm.finalizar">
+			<div class="col-md-12">
+				<br><br>	
+				<div class="alert alert-success" role="alert">
+					<p style="text-align: center;"><b>Informações Gerais</b> <span class="glyphicon glyphicon-list-alt"></span></p>
+					<p><b>Horario do sistema : <relogio></b></p>
+					<p><b>Cronometro : <stop-watch class="stopWatch" ></stop-watch>  <button ng-show="!vm.jogoiniciado"ng-click="iniciarJogo()" class="btn btn-primary">Iniciar <span class="glyphicon glyphicon-time"></span></button> <button ng-show="vm.jogoiniciado && !vm.pausado" class="btn btn-danger"ng-click="pausarJogo()">Pausar <span class="glyphicon glyphicon-pause"></span></button> 
+						<button ng-show="vm.jogoiniciado && vm.pausado"class="btn btn-primary"ng-click="continuarJogo()">Continuar <span class="glyphicon glyphicon-play"></span></button> 
+						<button ng-show="vm.jogoiniciado"class="btn btn-info"ng-click="resetarJogo()">Resetar <span class=" glyphicon glyphicon-refresh"></span></button></b>
+					</p>
+				</div>
+			</div>
+			<div class="col-md-12 col-sm-3">
+				<div class="panel panel-default">
+					<div class="panel-body" style="text-align: center">
+						<div ng-show="vm.mostrarAlerta" class="alert alert-danger" role="alert"><b>Defina</b> os <b>nomes</b> para os <b>times</b> !!!</div>
+						<h3 style="text-align: center">PLACAR DO JOGO</h3>
+						<div class="row">
+							<div class="col-md-5 col-sm-1">
+								<div style="padding: 15px" ng-show="!vm.timeXdefinido">
+									<input type="text" class="form-control" ng-model="nomeTimeX" placeholder="Informe o nome do time : [1]" aria-describedby="basic-addon1">
+									<br>
+									<a class="btn btn-success" ng-click="definirTime('X', nomeTimeX)">Confirmar <span class="glyphicon glyphicon-ok"></span></a>
+								</div>
+								<div ng-show="vm.timeXdefinido">
+									<h3 style="margin: 0px">{{timeX}}</h3><a href="" ng-click="vm.timeXdefinido = false">Editar <span class="glyphicon glyphicon-pencil"></span></a>
+									<h1>{{placarTimeX}}</h1>
+								</div>			
+							</div>
+							<div class="col-md-2 col-sm-2">
+								<h1>X</h1>	
+							</div>
+							<div class="col-md-5 col-sm-5">
+								<div style="padding: 15px" ng-show="!vm.timeYdefinido">
+									<input type="text" class="form-control" ng-model="nomeTimeY" placeholder="Informe o nome do time : [2]" aria-describedby="basic-addon1">
+									<br>
+									<a class="btn btn-success" ng-click="definirTime('Y', nomeTimeY)">Confirmar <span class="glyphicon glyphicon-ok"></span></a>
+								</div>
+								<div ng-show="vm.timeYdefinido">
+									<h3 style="margin: 0px">{{timeY}}</h3><a href="" ng-click="vm.timeYdefinido = false">Editar <span class="glyphicon glyphicon-pencil"></span></a>
+									<h1>{{placarTimeY}}</h1>
+								</div>					
+							</div>					
+						</div>
+						
+					</div>
+				</div>
+			</div>
+			<div class="col-md-12">	
+
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<table class="table table-hover table-inverse">
+							<thead>
+								<tr>
+									<th>Times</th>
+									<th></th>
+								</tr>
+							</thead>
+
+							<tbody>
+								<tr>  		
+									<th ng-disabled="true">{{timeX}}</th>
+									<th><button class="btn btn-primary" ng-click="marcarGol('X')" ng-disabled="!vm.jogoiniciado">GOL</button></th>
+								</tr>
+								<tr>  		
+									<th ng-disabled="true">{{timeY}}</th>
+									<th><button class="btn btn-danger" ng-disabled="!vm.jogoiniciado" ng-click="marcarGol('Y')">GOL</button></th>
+								</tr>
+							</tbody>
+						</table>
+						<button style="background-color: #449d44 !important" class="btn btn-success form-control" ng-disabled="!vm.jogoiniciado" ng-click="marcarGol(null)">Vale Replay <span class="glyphicon glyphicon-repeat"></span></button>
+					</div>
+				</div>
+
+				<div class="panel panel-default">
+					<h3 style="text-align: center">MELHORES MOMENTOS DA PARTIDA</h3>
+					<div class="panel-body">
+						<div class="table-responsive">
+							<table class="table table-hover table-inverse">
+								<thead>
+									<tr>
+										<th>DATA</th>
+										<th>HORA</th>
+										<th>CRONOMETRO</th>
+										<th>TIME</th>
+										<th>AÇÃO</th>
+									</tr>
+								</thead>
+
+								<tbody ng-repeat="melhores in melhoresmomentos" ng-init="melhoresmomentos.outerIndex = $index">
+									<tr>  		
+										<th>{{ melhores.data | date:'dd/MM/yyyy'}}</th>
+										<th>{{ melhores.hora | date:'HH:mm:ss'}}</th>
+										<th>{{melhores.cronometro}}</th>
+										<th>{{melhores.time}}</th>
+										<th><button class="btn btn-danger" ng-click="apagar(melhores)">Apagar <span class="glyphicon glyphicon-remove"></span></button></th>
+
+
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<a style="background-color: #449d44 !important"class="form-control btn btn-success" href="#/finalizar" ng-click="finalizarJogo()" ng-disabled="!vm.jogoiniciado" >Finalizar Jogo <span class="glyphicon glyphicon-ok"></span></a>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		{% endverbatim %}
+	</div> 
+</div>
+
+
+<ng-view></ng-view>
+</body>
+</html>

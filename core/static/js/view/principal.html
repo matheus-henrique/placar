@@ -1,0 +1,93 @@
+		{% verbatim %}
+		<div class="col-md-12">
+		<br><br>	
+		<div class="alert alert-success" role="alert">
+			<p style="text-align: center;"><b>Informações Gerais</b> <span class="glyphicon glyphicon-list-alt"></span></p>
+			<p><b>Horario do sistema : <relogio></b></p>
+			<p><b>Cronometro : <stop-watch class="stopWatch" ></stop-watch>  <button ng-show="!vm.jogoiniciado"ng-click="iniciarJogo()" class="btn btn-primary">Iniciar <span class="glyphicon glyphicon-time"></span></button> <button ng-show="vm.jogoiniciado && !vm.pausado" class="btn btn-danger"ng-click="pausarJogo()">Pausar <span class="glyphicon glyphicon-pause"></span></button> 
+			<button ng-show="vm.jogoiniciado && vm.pausado"class="btn btn-primary"ng-click="continuarJogo()">Continuar <span class="glyphicon glyphicon-play"></span></button> 
+			<button ng-show="vm.jogoiniciado"class="btn btn-info"ng-click="resetarJogo()">Resetar <span class=" glyphicon glyphicon-refresh"></span></button></b>
+			</p>
+		</div>
+			
+			
+			
+			
+			<div class="panel panel-default">
+			  <div class="panel-body">
+			    <table class="table table-hover table-inverse">
+				    <thead>
+				    	<tr>
+				    		<th>{{timeX}}</th>
+				    		<th>X</th>
+				    		<th> {{timeY}}</th>
+				    	</tr>
+				    </thead>
+				 
+				    <tbody>
+				    	<tr style="text-align: center;">  		
+				    		<th>{{placarTimeX}}</th>
+				    		<th >x</th>
+				    		<th>{{placarTimeY}}</th>	
+				    	</tr>
+				    </tbody>
+				  </table>
+			  </div>
+			</div>
+			<div class="panel panel-default">
+			  <div class="panel-body">
+			    <table class="table table-hover table-inverse">
+				    <thead>
+				    	<tr>
+				    		<th>Times</th>
+				    	</tr>
+				    </thead>
+				 
+				    <tbody>
+				    	<tr>  		
+				    		<th>Barcelandia F.C</th>
+				    		<th><button class="btn btn-primary" ng-click="marcarGol('X')" ng-disabled="!vm.jogoiniciado">GOL</button></th>
+				    	</tr>
+				    	<tr>  		
+				    		<th>RealMadruha F.C</th>
+				    		<th><button class="btn btn-danger" ng-disabled="!vm.jogoiniciado" ng-click="marcarGol('Y')">GOL</button></th>
+				    	</tr>
+				    </tbody>
+				  </table>
+				  <button class="btn btn-success form-control" ng-disabled="!vm.jogoiniciado" ng-click="marcarGol(null)">Vale Replay <span class="glyphicon glyphicon-repeat"></span></button>
+			  </div>
+			</div>
+
+			<div class="panel panel-default">
+			  <div class="panel-body">
+			    <table class="table table-hover table-inverse">
+				    <thead>
+				    	<tr>
+				    		<th>DATA</th>
+				    		<th>HORA</th>
+				    		<th>CRONOMETRO</th>
+				    		<th>TIME</th>
+				    		<th>AÇÃO</th>
+				    	</tr>
+				    </thead>
+				 
+				    <tbody ng-repeat="melhores in melhoresmomentos" ng-init="melhoresmomentos.outerIndex = $index">
+				    	<tr>  		
+				    		<th>{{ melhores.data | date:'dd/MM/yyyy'}}</th>
+				    		<th>{{ melhores.hora | date:'HH:mm:ss'}}</th>
+							<th>{{melhores.cronometro}}</th>
+							<th>{{melhores.time}}</th>
+							<th><button class="btn btn-danger" ng-click="apagar(melhores)">Apagar <span class="glyphicon glyphicon-remove"></span></button></th>
+
+	
+				    	</tr>
+				    </tbody>
+				  </table>
+				  <a class="form-control btn btn-success" href="#/finalizar" ng-disabled="!vm.jogoiniciado" >Finalizar Jogo <span class="glyphicon glyphicon-ok"></span></a>
+			  </div>
+			</div>
+			</div>
+		
+		</div>
+		{% endverbatim %}
+	</div>
